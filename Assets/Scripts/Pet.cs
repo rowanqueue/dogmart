@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 public enum Hue{
+    None,
     Red,
     Green,
     Blue,
     Yellow
 }
 public enum Shape{
+    None,
     Circle,
     Square,
     Hex,
@@ -15,11 +17,13 @@ public enum Shape{
 }
 public enum Pattern{
     None,
+    Solid,
     Striped,
     Spotted,
-    Dead
+    Swirled
 }
 public enum Bait{
+    None,
     Mayo,
     Watermelon,
     Fish,
@@ -62,9 +66,9 @@ public class Pet
         if(Time.time >= nextMovementAllowed){
             if(nextPosition != new Vector2Int(-1,-1)){
                 //we are currently moving to something
-                if(Vector2.Distance(gameObject.transform.position,nextPosition) < 0.1f){
+                if(Vector2.Distance(gameObject.transform.position,nextPosition) < Services.GameController.petMinRangeToFinish){
                     //go to next one
-                    nextMovementAllowed = Time.time+Random.Range(0.1f,0.3f);
+                    nextMovementAllowed = Time.time+Random.Range(Services.GameController.petWaitMin,Services.GameController.petWaitMax);
                     gridPosition = nextPosition;
                     if(search.steps.Count > 0){
                         nextPosition = search.steps.Pop();
@@ -84,7 +88,7 @@ public class Pet
         if(Services.Grid.InGrid(targetPosition) == false){
             targetPosition = gridPosition;
         }
-        gameObject.transform.position += ((Vector3)Services.Grid.GridToReal(targetPosition)-gameObject.transform.position)*0.05f;
+        gameObject.transform.position += ((Vector3)Services.Grid.GridToReal(targetPosition)-gameObject.transform.position)*Services.GameController.petSpeed;
     }
     public void GetGoal(){
         goal = gridPosition + new Vector2Int(Random.Range(-2,3),Random.Range(-2,3));
@@ -104,13 +108,45 @@ public struct Traits{
     public Pattern pattern;
     public Bait bait;
     public void RandomTraits(){
-        this.hue = (Hue)Random.Range(0,4);
-        this.shape = (Shape)Random.Range(0,4);
-        this.pattern = (Pattern)Random.Range(0,4);
-        this.bait = (Bait)Random.Range(0,4);
+        this.hue = (Hue)Random.Range(1,5);
+        this.shape = (Shape)Random.Range(1,5);
+        this.pattern = (Pattern)Random.Range(1,5);
+        this.bait = (Bait)Random.Range(1,5);
     }
-     public override string ToString(){
-         string s = hue+", "+shape+", "+pattern+", "+bait;
-         return s;
-     }
+    public override string ToString(){
+        string s = hue+", "+shape+", "+pattern+", "+bait;
+        return s;
+    }
+    public float CompareTrait(Traits request){
+        float value = 0;
+        if(request.hue != Hue.None){
+            if(request.hue == hue){
+                value+=Services.GameController.positiveTraitTradeGain;
+            }else{
+                value+=Services.GameController.negativeTraitTradeLoss;
+            }
+        }
+        if(request.shape != Shape.None){
+            if(request.shape == shape){
+                value+=Services.GameController.positiveTraitTradeGain;
+            }else{
+                value+=Services.GameController.negativeTraitTradeLoss;
+            }
+        }
+        if(request.pattern != Pattern.None){
+            if(request.pattern == pattern){
+                value+=Services.GameController.positiveTraitTradeGain;
+            }else{
+                value+=Services.GameController.negativeTraitTradeLoss;
+            }
+        }
+        if(request.bait != Bait.None){
+            if(request.bait == bait){
+                value+=Services.GameController.positiveTraitTradeGain;
+            }else{
+                value+=Services.GameController.negativeTraitTradeLoss;
+            }
+        }
+        return value;
+    }
 }

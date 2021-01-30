@@ -5,6 +5,13 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public GameObject petPrefab;
+    [Header("Tuning")]
+    public float petSpeed = 0.05f;
+    public float petWaitMin = 0.15f;
+    public float petWaitMax = 0.35f;
+    public float petMinRangeToFinish = 0.1f;
+    public float positiveTraitTradeGain = 1.5f;
+    public float negativeTraitTradeLoss = 1f;
     // Start is called before the first frame update
     void Awake()
     {
