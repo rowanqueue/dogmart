@@ -6,12 +6,15 @@ public class GameController : MonoBehaviour
 {
     public GameObject petPrefab;
     public GameObject pegPrefab;
+
+    public GameObject foodPrefab;
     [Header(("Grabbing pets"))]
     
     public bool holdingSomething;
-    public int whatHolding;//0: nothing, 1: pet, 2: peg
+    public int whatHolding;//0: nothing, 1: pet, 2: peg, 3: food
     public Pet heldPet;
     public Peg heldPeg;
+    public Food heldFood;
     [Header("Tuning")]
     public float petSpeed = 0.05f;
     public float petWaitMin = 0.15f;
@@ -27,6 +30,7 @@ public class GameController : MonoBehaviour
             Services.PetManager.AddPet(Services.Grid.RandomPosition());
         }
         Services.PetManager.AddPeg(new Vector2Int(0,0));
+        Services.PetManager.AddFood(new Vector2Int(Services.Grid.size.x-1,0));
     }
     void InitializeServices(){
         Services.GameController = this;
@@ -52,9 +56,16 @@ public class GameController : MonoBehaviour
                 }
             }
             if(holdingSomething == false){
+                foreach(Food food in Services.PetManager.foods){
+                    if(food.installed == false && Vector2.Distance(food.gameObject.transform.position,mousePos) < 0.75f){
+                        GrabFood(food);
+                        break;
+                    }
+                }
+            }
+            if(holdingSomething == false){
                 foreach(Pet pet in Services.PetManager.pets){
                     if(Vector2.Distance(pet.gameObject.transform.position,mousePos) < 0.75f){
-                        Debug.Log("Grabbed");
                         GrabPet(pet);
                         break;
                     }
@@ -69,6 +80,9 @@ public class GameController : MonoBehaviour
                         break;
                     case 2:
                         DropPeg();
+                        break;
+                    case 3:
+                        DropFood();
                         break;
                 }
             }
@@ -108,5 +122,19 @@ public class GameController : MonoBehaviour
         heldPeg.installed = true;
         heldPeg.held = false;
         heldPeg = null;
+    }
+    void GrabFood(Food food){
+        holdingSomething = true;
+        whatHolding = 3;
+        heldFood = food;
+        food.held = true;
+    }
+    void DropFood(){
+        holdingSomething = false;
+        whatHolding = 0;
+        heldFood.gridPosition = Services.Grid.MouseGridPosition();
+        heldFood.installed = true;
+        heldFood.held = false;
+        heldFood = null;
     }
 }

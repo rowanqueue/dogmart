@@ -237,6 +237,8 @@ MonoBehaviour:
     type: 3}
   pegPrefab: {fileID: 5306925472918717244, guid: 3044142877842914e850c37d52ab5df4,
     type: 3}
+  foodPrefab: {fileID: 6921385004499963693, guid: ef02a2af10ffb8f4f88cb7b2751c7661,
+    type: 3}
   holdingSomething: 0
   whatHolding: 0
   petSpeed: 0.05
