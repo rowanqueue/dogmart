@@ -235,12 +235,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   petPrefab: {fileID: 4487846554458169626, guid: d7b045772f6624d47a7965e55c4b1b8a,
     type: 3}
+  pegPrefab: {fileID: 0}
+  foodPrefab: {fileID: 0}
   CustomerPrefab: {fileID: 287914668912864548, guid: a2dc6e36801b2c04d9b9ffc4cd56d792,
     type: 3}
   CustomerLine: {fileID: 1857425024}
   want: {fileID: 1045270525034650176, guid: d1f7f91b99c809c4f8060d1de691a3b7, type: 3}
   camera: {fileID: 519420031}
-  holdingPet: 0
+  holdingSomething: 0
+  whatHolding: 0
   petSpeed: 0.05
   petWaitMin: 0.15
   petWaitMax: 0.35
