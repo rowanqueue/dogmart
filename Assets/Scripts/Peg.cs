@@ -19,6 +19,8 @@ public class Peg
         gameObject = GameObject.Instantiate(Services.GameController.pegPrefab,(Vector2)gridPosition,Quaternion.identity,Services.GameController.transform) as GameObject;
         ropes = new List<LineRenderer>();
         ropes.Add(gameObject.transform.GetChild(1).GetComponent<LineRenderer>());
+        ropes[0].positionCount = 5;
+        ropes[0].enabled = false;
         pets = new List<Pet>();
     }
     public void Update(){
@@ -36,11 +38,16 @@ public class Peg
 
         if(installed == false){return;}
         for(int i = 0; i < pets.Count;i++){
+            ropes[i].enabled = true;
             Pet pet = pets[i];
             ropes[i].SetPosition(0,gameObject.transform.position);
-            ropes[i].SetPosition(1,pet.gameObject.transform.position);
+            ropes[i].SetPosition(ropes[i].positionCount-1,pet.gameObject.transform.position);
+            Vector2 between = pet.gameObject.transform.position-gameObject.transform.position;
+            between = Vector2.Perpendicular(between).normalized*0.4f;
+            ropes[i].SetPosition(1,Vector2.Lerp(ropes[i].GetPosition(0),ropes[i].GetPosition(ropes[i].positionCount-1)+Mathf.Cos(Time.time)*(Vector3)between,0.25f));
+            ropes[i].SetPosition(2,Vector2.Lerp(ropes[i].GetPosition(0),ropes[i].GetPosition(ropes[i].positionCount-1)+Mathf.Cos(Time.time+10f)*(Vector3)between,0.5f));
+            ropes[i].SetPosition(3,Vector2.Lerp(ropes[i].GetPosition(0),ropes[i].GetPosition(ropes[i].positionCount-1)+Mathf.Cos(Time.time+5f)*(Vector3)between*-1f,0.75f));
             if(Vector2.Distance(pet.gameObject.transform.position,gameObject.transform.position) > maxLength){
-                Debug.Log("yank");
                 health--;
                 pet.nextPosition = pet.gridPosition;
                 pet.SetGoal(OppositeEnd(pet));
