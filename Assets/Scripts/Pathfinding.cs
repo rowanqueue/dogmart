@@ -90,7 +90,14 @@ public class AStarSearch
                         break;
                     }
                 }
-                Location newLocation = new Location(neighbor,0,Heuristic(neighbor,goal)*(hasOtherAtPosition ? 2f : 1));
+                bool hasPeg = false;
+                foreach(Peg p in Services.PetManager.pegs){
+                    if(p.gridPosition == neighbor){
+                        hasPeg = true;
+                        break;
+                    }
+                }
+                Location newLocation = new Location(neighbor,0,Heuristic(neighbor,goal)*(hasOtherAtPosition ? 2f : 1)*(hasPeg ? 3f : 1));
                 if(closedlist.Contains(newLocation)){continue;}
                 int index = openList.IndexOf(newLocation);
                 if(index == -1){

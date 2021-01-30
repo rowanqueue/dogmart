@@ -235,6 +235,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   petPrefab: {fileID: 4487846554458169626, guid: d7b045772f6624d47a7965e55c4b1b8a,
     type: 3}
+  pegPrefab: {fileID: 5306925472918717244, guid: 3044142877842914e850c37d52ab5df4,
+    type: 3}
+  holdingSomething: 0
+  whatHolding: 0
+  petSpeed: 0.05
+  petWaitMin: 0.15
+  petWaitMax: 0.35
+  petMinRangeToFinish: 0.1
+  positiveTraitTradeGain: 1.5
+  negativeTraitTradeLoss: 1
 --- !u!4 &1190825744
 Transform:
   m_ObjectHideFlags: 0

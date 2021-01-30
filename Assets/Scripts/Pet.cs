@@ -106,6 +106,13 @@ public class Pet
             nextPosition = search.steps.Pop();
         }
     }
+    public void SetGoal(Vector2Int g){
+        goal = g;
+        search = new AStarSearch(gridPosition,goal);
+        if(search.steps.Count > 0){
+            nextPosition = search.steps.Pop();
+        }
+    }
 
 }
 public struct Traits{

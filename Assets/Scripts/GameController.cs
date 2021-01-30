@@ -5,9 +5,13 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public GameObject petPrefab;
+    public GameObject pegPrefab;
     [Header(("Grabbing pets"))]
+    
+    public bool holdingSomething;
+    public int whatHolding;//0: nothing, 1: pet, 2: peg
     public Pet heldPet;
-    public bool holdingPet;
+    public Peg heldPeg;
     [Header("Tuning")]
     public float petSpeed = 0.05f;
     public float petWaitMin = 0.15f;
@@ -22,6 +26,7 @@ public class GameController : MonoBehaviour
         for(var i = 0; i < 5;i++){
             Services.PetManager.AddPet(Services.Grid.RandomPosition());
         }
+        Services.PetManager.AddPeg(new Vector2Int(0,0));
     }
     void InitializeServices(){
         Services.GameController = this;
@@ -38,7 +43,15 @@ public class GameController : MonoBehaviour
         }
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if(Input.GetMouseButtonDown(0)){
-            if(holdingPet == false){
+            if(holdingSomething == false){
+                foreach(Peg peg in Services.PetManager.pegs){
+                    if(peg.installed == false && Vector2.Distance(peg.gameObject.transform.position,mousePos) < 0.75f){
+                        GrabPeg(peg);
+                        break;
+                    }
+                }
+            }
+            if(holdingSomething == false){
                 foreach(Pet pet in Services.PetManager.pets){
                     if(Vector2.Distance(pet.gameObject.transform.position,mousePos) < 0.75f){
                         Debug.Log("Grabbed");
@@ -48,22 +61,52 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-        if(holdingPet){
+        if(holdingSomething){
             if(Input.GetMouseButtonUp(0)){
-                DropPet();
+                switch(whatHolding){
+                    case 1:
+                        DropPet();
+                        break;
+                    case 2:
+                        DropPeg();
+                        break;
+                }
             }
         }
         Services.PetManager.Update();
     }
     void GrabPet(Pet pet){
-        holdingPet = true;
+        holdingSomething = true;
+        whatHolding = 1;
         heldPet = pet;
         heldPet.goal = new Vector2Int(-1,-1);
         pet.held = true;
     }
     void DropPet(){
-        holdingPet = false;
+        holdingSomething = false;
+        whatHolding = 0;
         heldPet.gridPosition = Services.Grid.MouseGridPosition();
+        foreach(Peg peg in Services.PetManager.pegs){
+            if(peg.gridPosition == heldPet.gridPosition || Vector2.Distance(peg.gameObject.transform.position,heldPet.gameObject.transform.position) < 0.75f){
+                peg.AttachPetToPeg(heldPet);
+                break;
+            }
+        }
         heldPet.held = false;
+        heldPet = null;
+    }
+    void GrabPeg(Peg peg){
+        holdingSomething = true;
+        whatHolding = 2;
+        heldPeg = peg;
+        peg.held = true;
+    }
+    void DropPeg(){
+        holdingSomething = false;
+        whatHolding = 0;
+        heldPeg.gridPosition = Services.Grid.MouseGridPosition();
+        heldPeg.installed = true;
+        heldPeg.held = false;
+        heldPeg = null;
     }
 }
