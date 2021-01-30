@@ -164,7 +164,7 @@ public class Customer
         float happ = pet.traits.CompareTrait(needs);
         satisfied = true;
         leaveQueue();
-        GameObject.Destroy(pet.gameObject);
+        pet.gameObject.SetActive(false);
 
     }
 }

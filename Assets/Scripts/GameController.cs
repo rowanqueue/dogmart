@@ -76,7 +76,10 @@ public class GameController : MonoBehaviour
         holdingPet = false;
         heldPet.gridPosition = Services.Grid.MouseGridPosition();
         heldPet.held = false;
-        float dist = Vector3.Distance(camera.ScreenToWorldPoint((Vector3)Input.mousePosition), Services.GameController.CustomerLine.transform.position);
+        Vector3 mousePos = camera.ScreenToWorldPoint((Vector3)Input.mousePosition);
+        mousePos.z = 0;
+        float dist = Vector3.Distance(mousePos, Services.GameController.CustomerLine.transform.position);
+        print("FUCK"+ mousePos + " & " + Services.GameController.CustomerLine.transform.position + "\n" + dist);
         if (dist < 1)
         {
             Services.CustomerManager.queue[0].GotPet(heldPet);
