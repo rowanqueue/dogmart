@@ -32,6 +32,7 @@ public enum Bait{
 
 public class Pet
 {
+    public bool held;
     public Vector2Int gridPosition;
     public Vector2Int goal;
     public Vector2Int nextPosition;
@@ -62,9 +63,14 @@ public class Pet
     }
 
     public void Update(){
+        if(held){
+            gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x+Mathf.Sin(Time.time*15f)*0.1f,gameObject.transform.position.y+Mathf.Sin(Time.time*10f)*0.05f,0f);
+            return;
+        }
         Vector2Int targetPosition = gridPosition;
         if(Time.time >= nextMovementAllowed){
-            if(nextPosition != new Vector2Int(-1,-1)){
+            if(goal != new Vector2Int(-1,-1)){
                 //we are currently moving to something
                 if(Vector2.Distance(gameObject.transform.position,nextPosition) < Services.GameController.petMinRangeToFinish){
                     //go to next one
@@ -73,7 +79,7 @@ public class Pet
                     if(search.steps.Count > 0){
                         nextPosition = search.steps.Pop();
                     }else{
-                        nextPosition = new Vector2Int(-1,-1);
+                        goal = new Vector2Int(-1,-1);
                     }
                     
                 }
