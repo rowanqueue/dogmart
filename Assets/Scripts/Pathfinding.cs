@@ -39,12 +39,14 @@ public class AStarSearch
     public Stack<Vector2Int> steps = new Stack<Vector2Int>();
     public Dictionary<Vector2Int,Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
     public Dictionary<Vector2Int,float> costSoFar = new Dictionary<Vector2Int, float>();
-    int[] numbers = new int[]{0,1,2,3,4,5,6,7};
-    Vector2Int[] directions = new Vector2Int[]{Vector2Int.up,new Vector2Int(1,1),Vector2Int.right, new Vector2Int(1,-1),Vector2Int.down,new Vector2Int(-1,-1),Vector2Int.left, new Vector2Int(-1,1)};
+    int[] numbers;
+    Vector2Int[] directions = new Vector2Int[]{Vector2Int.up,Vector2Int.right,Vector2Int.down,Vector2Int.left};
+    //new Vector2Int[]{Vector2Int.up,new Vector2Int(1,1),Vector2Int.right, new Vector2Int(1,-1),Vector2Int.down,new Vector2Int(-1,-1),Vector2Int.left, new Vector2Int(-1,1)};
     static public float Heuristic(Vector2Int a, Vector2Int b){
         return Vector2Int.Distance(a,b);
     }
     public AStarSearch(Vector2Int start, Vector2Int goal){
+        numbers = new int[directions.Length];
         for(var i = 0; i < numbers.Length;i++){
             numbers[i] = i;
         }
