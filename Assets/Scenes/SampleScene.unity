@@ -198,7 +198,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8, y: 4, z: -10}
+  m_LocalPosition: {x: 7.5, y: 3.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -235,10 +235,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   petPrefab: {fileID: 4487846554458169626, guid: d7b045772f6624d47a7965e55c4b1b8a,
     type: 3}
-  pegPrefab: {fileID: 5306925472918717244, guid: 3044142877842914e850c37d52ab5df4,
-    type: 3}
-  foodPrefab: {fileID: 6921385004499963693, guid: ef02a2af10ffb8f4f88cb7b2751c7661,
-    type: 3}
+  pegPrefab: {fileID: 0}
+  foodPrefab: {fileID: 0}
   CustomerPrefab: {fileID: 287914668912864548, guid: a2dc6e36801b2c04d9b9ffc4cd56d792,
     type: 3}
   CustomerLine: {fileID: 1857425024}
