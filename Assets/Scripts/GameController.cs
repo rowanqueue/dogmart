@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour
 
     void InitializeServices(){
         Services.GameController = this;
+        Services.Visuals = GetComponentInChildren<Visuals>();
         Services.Grid = new Grid();
         Services.PetManager = new PetManager();
         Services.PetManager.Initialize();
