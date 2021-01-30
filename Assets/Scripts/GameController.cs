@@ -8,6 +8,11 @@ public class GameController : MonoBehaviour
     public GameObject pegPrefab;
 
     public GameObject foodPrefab;
+    public GameObject CustomerPrefab;
+    public GameObject CustomerLine;
+    public GameObject want;
+    public Camera camera;
+
     [Header(("Grabbing pets"))]
     
     public bool holdingSomething;
@@ -22,6 +27,7 @@ public class GameController : MonoBehaviour
     public float petMinRangeToFinish = 0.1f;
     public float positiveTraitTradeGain = 1.5f;
     public float negativeTraitTradeLoss = 1f;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -32,11 +38,14 @@ public class GameController : MonoBehaviour
         Services.PetManager.AddPeg(new Vector2Int(0,0));
         Services.PetManager.AddFood(new Vector2Int(Services.Grid.size.x-1,0));
     }
+
     void InitializeServices(){
         Services.GameController = this;
         Services.Grid = new Grid();
         Services.PetManager = new PetManager();
         Services.PetManager.Initialize();
+        Services.CustomerManager = new CustomerManager();
+        Services.CustomerManager.Initialize();
     }
 
     // Update is called once per frame
@@ -88,6 +97,7 @@ public class GameController : MonoBehaviour
             }
         }
         Services.PetManager.Update();
+        Services.CustomerManager.Update();
     }
     void GrabPet(Pet pet){
         holdingSomething = true;
@@ -96,6 +106,7 @@ public class GameController : MonoBehaviour
         heldPet.goal = new Vector2Int(-1,-1);
         pet.held = true;
     }
+
     void DropPet(){
         holdingSomething = false;
         whatHolding = 0;
@@ -107,7 +118,16 @@ public class GameController : MonoBehaviour
             }
         }
         heldPet.held = false;
+        Vector3 mousePos = camera.ScreenToWorldPoint((Vector3)Input.mousePosition);
+        mousePos.z = 0;
+        float dist = Vector3.Distance(mousePos, Services.GameController.CustomerLine.transform.position);
+        print("FUCK"+ mousePos + " & " + Services.GameController.CustomerLine.transform.position + "\n" + dist);
+        if (dist < 1)
+        {
+            Services.CustomerManager.queue[0].GotPet(heldPet);
+        }
         heldPet = null;
+
     }
     void GrabPeg(Peg peg){
         holdingSomething = true;
