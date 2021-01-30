@@ -29,27 +29,72 @@ public enum Bait{
 public class Pet
 {
     public Vector2Int gridPosition;
+    public Vector2Int goal;
+    public Vector2Int nextPosition;
+    AStarSearch search;
     public GameObject gameObject;
+    float nextMovementAllowed;
 
     public Traits traits;
     public Pet(Vector2Int gridPos, Traits traits){
         this.gridPosition = gridPos;
         this.traits = traits;
         CreateVisual();
+        nextMovementAllowed = Time.time;
     }
     public Pet(Vector2Int gridPos){
         this.gridPosition = gridPos;
         this.traits = new Traits();
         this.traits.RandomTraits();
         CreateVisual();
+        GetGoal();
+        while(search.steps.Count == 0){
+            GetGoal();
+        }
+        
     }
     void CreateVisual(){
         gameObject = GameObject.Instantiate(Services.GameController.petPrefab,(Vector2)gridPosition,Quaternion.identity,Services.GameController.transform) as GameObject;
     }
 
     public void Update(){
-        Debug.Log(traits);
-        gameObject.transform.position += ((Vector3)Services.Grid.GridToReal(gridPosition)-gameObject.transform.position)*0.1f;
+        Vector2Int targetPosition = gridPosition;
+        if(Time.time >= nextMovementAllowed){
+            if(nextPosition != new Vector2Int(-1,-1)){
+                //we are currently moving to something
+                if(Vector2.Distance(gameObject.transform.position,nextPosition) < 0.1f){
+                    //go to next one
+                    nextMovementAllowed = Time.time+Random.Range(0.1f,0.3f);
+                    gridPosition = nextPosition;
+                    if(search.steps.Count > 0){
+                        nextPosition = search.steps.Pop();
+                    }else{
+                        nextPosition = new Vector2Int(-1,-1);
+                    }
+                    
+                }
+                targetPosition = nextPosition;
+                if(nextPosition == new Vector2Int(-1,-1)){
+                    targetPosition = gridPosition;
+                }
+            }else{
+                GetGoal();
+            }
+        }
+        if(Services.Grid.InGrid(targetPosition) == false){
+            targetPosition = gridPosition;
+        }
+        gameObject.transform.position += ((Vector3)Services.Grid.GridToReal(targetPosition)-gameObject.transform.position)*0.05f;
+    }
+    public void GetGoal(){
+        goal = gridPosition + new Vector2Int(Random.Range(-2,3),Random.Range(-2,3));
+        while(Services.Grid.InGrid(goal) == false){
+            goal = gridPosition + new Vector2Int(Random.Range(-2,3),Random.Range(-2,3));
+        }
+        search = new AStarSearch(gridPosition,goal);
+        if(search.steps.Count > 0){
+            nextPosition = search.steps.Pop();
+        }
     }
 
 }

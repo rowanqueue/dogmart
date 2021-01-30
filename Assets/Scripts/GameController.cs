@@ -9,7 +9,9 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         InitializeServices();
-        Services.PetManager.AddPet(Vector2Int.zero);
+        for(var i = 0; i < 50;i++){
+            Services.PetManager.AddPet(Services.Grid.RandomPosition());
+        }
     }
     void InitializeServices(){
         Services.GameController = this;
