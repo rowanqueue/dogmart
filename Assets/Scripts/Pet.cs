@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum Hue{
     None,
-    Red,
     Green,
-    Blue,
+    Red,
     Yellow
 }
 public enum Shape{
@@ -18,9 +17,9 @@ public enum Shape{
 public enum Pattern{
     None,
     Solid,
-    Striped,
     Spotted,
-    Swirled
+    Frosted,
+    Striped
 }
 public enum Bait{
     None,
@@ -38,6 +37,7 @@ public class Pet
     public Vector2Int nextPosition;
     AStarSearch search;
     public GameObject gameObject;
+    SpriteRenderer spriteRenderer;
     float nextMovementAllowed;
 
     public Traits traits;
@@ -51,6 +51,7 @@ public class Pet
         this.gridPosition = gridPos;
         this.traits = new Traits();
         this.traits.RandomTraits();
+        traits.shape = Shape.Circle;
         CreateVisual();
         GetGoal();
         while(search.steps.Count == 0){
@@ -60,6 +61,8 @@ public class Pet
     }
     void CreateVisual(){
         gameObject = GameObject.Instantiate(Services.GameController.petPrefab,(Vector2)gridPosition,Quaternion.identity,Services.GameController.transform) as GameObject;
+        spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer.sprite = Services.Visuals.GetVisual(this);
     }
 
     public void Update(){
@@ -121,7 +124,7 @@ public struct Traits{
     public Pattern pattern;
     public Bait bait;
     public void RandomTraits(){
-        this.hue = (Hue)Random.Range(1,5);
+        this.hue = (Hue)Random.Range(1,4);
         this.shape = (Shape)Random.Range(1,5);
         this.pattern = (Pattern)Random.Range(1,5);
         this.bait = (Bait)Random.Range(1,5);

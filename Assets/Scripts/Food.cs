@@ -23,6 +23,7 @@ public class Food
             return;
         }
         gameObject.transform.position = (Vector2)gridPosition;
+        if(installed == false){return;}
         foreach(Pet pet in Services.PetManager.pets){
             if(pet.traits.bait == bait){
                 float distance = Vector2.Distance(pet.gameObject.transform.position,gameObject.transform.position);

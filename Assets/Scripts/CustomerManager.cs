@@ -91,7 +91,7 @@ public class Customer
         {
             totalNeeds++;
             GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
-            gob.GetComponent<TextMesh>().text = "Need:" + (int) needs.hue;
+            gob.GetComponent<TextMesh>().text = "Need:" + needs.hue;
             want.Add(gob); 
         }
 
@@ -99,7 +99,7 @@ public class Customer
         {
             totalNeeds++;
             GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
-            gob.GetComponent<TextMesh>().text = "Need:" + (int)needs.pattern;
+            gob.GetComponent<TextMesh>().text = "Need:" + needs.pattern;
             want.Add(gob);
         }
 
@@ -107,7 +107,7 @@ public class Customer
         {
             totalNeeds++;
             GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
-            gob.GetComponent<TextMesh>().text = "Need:" + (int)needs.hue;
+            gob.GetComponent<TextMesh>().text = "Need:" + needs.shape;
             want.Add(gob);
         }
     }
