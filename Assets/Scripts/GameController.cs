@@ -7,6 +7,9 @@ public class GameController : MonoBehaviour
     public GameObject petPrefab;
     public GameObject CustomerPrefab;
     public GameObject CustomerLine;
+    public GameObject want;
+    public Camera camera;
+
     [Header(("Grabbing pets"))]
     public Pet heldPet;
     public bool holdingPet;
@@ -68,9 +71,15 @@ public class GameController : MonoBehaviour
         heldPet.goal = new Vector2Int(-1,-1);
         pet.held = true;
     }
+
     void DropPet(){
         holdingPet = false;
         heldPet.gridPosition = Services.Grid.MouseGridPosition();
         heldPet.held = false;
+        float dist = Vector3.Distance(camera.ScreenToWorldPoint((Vector3)Input.mousePosition), Services.GameController.CustomerLine.transform.position);
+        if (dist < 1)
+        {
+            Services.CustomerManager.queue[0].GotPet(heldPet);
+        }
     }
 }
