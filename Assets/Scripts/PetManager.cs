@@ -13,7 +13,7 @@ public class PetManager
         foods = new List<Food>();
         for (int i = 0; i < 6; i++)
         {
-            AddPet(new Vector2Int(0,0));
+            //AddPet(new Vector2Int(0,0));
         }
     }
     public void AddPet(Vector2Int gridPos){
