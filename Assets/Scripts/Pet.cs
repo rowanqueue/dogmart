@@ -38,6 +38,7 @@ public class Pet
     public bool dead;
     public State state;//0: resting, 1: moving
     public bool held;
+    public bool owned = false;
     public Vector2Int gridPosition;
     public Vector2Int goal;
     public Vector2Int nextPosition;

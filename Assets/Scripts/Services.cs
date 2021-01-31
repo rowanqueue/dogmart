@@ -9,4 +9,5 @@ public class Services
     public static PetManager PetManager;
     public static CustomerManager CustomerManager;
     public static Visuals Visuals;
+    public static DayManager DayManager;
 }
