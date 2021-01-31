@@ -90,6 +90,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9193333332786775225}
+  - component: {fileID: 5867404634815275433}
   m_Layer: 0
   m_Name: Want
   m_TagString: Untagged
@@ -112,6 +113,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5867404634815275433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045270525034650176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ab5ee691f8a81419e05e539d0ac8f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderers:
+  - {fileID: 141660231663187203}
+  - {fileID: 5946699725745961923}
+  - {fileID: 9062554930420153385}
+  - {fileID: 4001281437201091556}
+  spaceForOne: {x: 0, y: 0.48}
+  sizeForOne: 3
+  spacesForTwo:
+  - {x: -1.14, y: 0.43}
+  - {x: 1.16, y: 0.1999997}
+  sizeForTwo: 2
+  spacesForThree:
+  - {x: -0.845, y: 1.102}
+  - {x: 0.05, y: -0.53}
+  - {x: 1.03, y: 1.13}
+  sizeForThree: 1.5
 --- !u!1 &1453049575559804831
 GameObject:
   m_ObjectHideFlags: 0

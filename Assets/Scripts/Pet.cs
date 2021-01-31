@@ -52,6 +52,7 @@ public class Pet
     public float burnStartTime;
 
     public Traits traits;
+    public bool hasOwner;
     public Pet(Vector2Int gridPos){
         this.gridPosition = gridPos;
         this.traits = new Traits();

@@ -35,7 +35,19 @@ public class CustomerManager
     public Customer AddCustomer(float waitTime)
     {
         Traits t = new Traits();
-        t.RandomTraits();
+        int tries = 0;
+        int petIndex = Random.Range(0,Services.PetManager.pets.Count-1);
+        while(Services.PetManager.pets[petIndex].hasOwner){
+            tries++;
+            petIndex++;
+            if(petIndex >= Services.PetManager.pets.Count){
+                petIndex = 0;
+            }
+            if(tries >= 20){
+                break;
+            }
+        }
+        t = Services.PetManager.pets[petIndex].traits;
         Customer cust = new Customer(t,waitTime,100);
         return cust;
     }
@@ -84,7 +96,7 @@ public class CustomerManager
                     }
                     else if (x == 3 && t.shape == Shape.None)
                     {
-                        t.shape = (Shape)Random.Range(1, 5);
+                        t.shape = (Shape)Random.Range(1, 4);
                     }
                     else if (x == 4 && t.bait == Bait.None)
                     {
@@ -255,8 +267,8 @@ public class Customer
         gameObject = GameObject.Instantiate(Services.GameController.CustomerPrefab, Services.GameController.CustomerLine.transform.position + new Vector3(linePosition,0,0), Quaternion.identity, Services.GameController.CustomerLine.transform);
         spriteRenderers = new List<SpriteRenderer>();
         spriteRenderers.Add(gameObject.GetComponent<SpriteRenderer>());
-        foreach(Transform child in gameObject.transform){
-            spriteRenderers.Add(child.gameObject.GetComponent<SpriteRenderer>());
+        for(int i = 1; i < gameObject.transform.childCount;i++){
+            spriteRenderers.Add(gameObject.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>());
         }
         spriteRenderers[0].sprite = Services.Visuals.customerBodies[Random.Range(0,4)];
         spriteRenderers[1].sprite = Services.Visuals.customerEyes[Random.Range(0,4)];
@@ -268,13 +280,15 @@ public class Customer
         gameObject.SetActive(false);
         GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
         wantSpriteRenderers = new List<SpriteRenderer>();
-        foreach(Transform child in gob.transform.GetChild(0)){
-            wantSpriteRenderers.Add(child.gameObject.GetComponent<SpriteRenderer>());
+        Want w = gob.GetComponent<Want>();
+        foreach(SpriteRenderer s in w.spriteRenderers){
+            wantSpriteRenderers.Add(s);
         }
         want = gob;
         gob.SetActive(false);
         if (needs.shape != Shape.None)
         {
+            Debug.Log(needs.shape);
             wantSpriteRenderers[totalNeeds].sprite = Services.Visuals.wantShapes[(int)needs.shape-1];
             totalNeeds++;
             
@@ -295,6 +309,7 @@ public class Customer
             wantSpriteRenderers[totalNeeds].sprite = Services.Visuals.baits[(int)needs.bait-1];
             totalNeeds++;
         }
+        w.SetSpaces(totalNeeds);
         for(var i = 0; i < wantSpriteRenderers.Count;i++){
             wantSpriteRenderers[i].enabled = false;
             if(i < totalNeeds){
