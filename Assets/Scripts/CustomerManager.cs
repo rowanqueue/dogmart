@@ -346,6 +346,7 @@ public class Customer
         else
         {
             Services.CustomerManager.done.Add(this);
+            Services.DayManager.money += payout;
             GameObject.Destroy(gameObject);
         }
     }
