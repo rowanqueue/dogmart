@@ -46,6 +46,9 @@ public class AStarSearch
         return Vector2Int.Distance(a,b);
     }
     public AStarSearch(Vector2Int start, Vector2Int goal){
+        if(goal == new Vector2Int(1,1) || goal == new Vector2Int(1,0)){
+            return;
+        }
         numbers = new int[directions.Length];
         for(var i = 0; i < numbers.Length;i++){
             numbers[i] = i;
