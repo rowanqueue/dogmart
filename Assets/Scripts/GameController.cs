@@ -61,8 +61,8 @@ public class GameController : MonoBehaviour
     void Update()
     {
         if(Input.GetMouseButtonDown(0)){
-            //Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            Debug.Log(Services.Grid.MouseGridPosition());
+            Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            //Debug.Log(Services.Grid.MouseGridPosition());
         }
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if(Input.GetMouseButtonDown(0)){

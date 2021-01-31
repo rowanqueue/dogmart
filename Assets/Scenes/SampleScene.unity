@@ -153,6 +153,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider2D: {fileID: 65514002}
   burnTime: 2
+  flamePrefab: {fileID: 411929574581254448, guid: c3ebacd7ca90a2444908579ffe18b995,
+    type: 3}
+  flamePosition: {x: 1, y: 1}
+  flameSize: 0.5
 --- !u!60 &65514002
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1168,7 +1172,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1930826775}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.002, y: 4.02, z: 0}
+  m_LocalPosition: {x: 7.002, y: 4.02, z: 1}
   m_LocalScale: {x: 0.93, y: 0.78937495, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
