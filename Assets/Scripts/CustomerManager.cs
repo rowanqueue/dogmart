@@ -44,21 +44,23 @@ public class CustomerManager
         bool petFound = false;
         int petsSearched = 0;
         Traits t = new Traits();
-        while (!petFound)
-        {
-            int z = Random.Range(0, Services.PetManager.pets.Count-1);
-            if(!Services.PetManager.pets[z].owned)
+        if (Services.PetManager.pets.Count > 0) {
+            while (!petFound)
             {
-                t = Services.PetManager.pets[z].traits;
-                petFound = true;
-                Services.PetManager.pets[z].owned = true;
-            }
-            else
-            {
-                petsSearched++;
-                if(petsSearched > Services.PetManager.pets.Count)
+                int z = Random.Range(0, Services.PetManager.pets.Count - 1);
+                if (!Services.PetManager.pets[z].owned)
                 {
-                    break;
+                    t = Services.PetManager.pets[z].traits;
+                    petFound = true;
+                    Services.PetManager.pets[z].owned = true;
+                }
+                else
+                {
+                    petsSearched++;
+                    if (petsSearched > Services.PetManager.pets.Count)
+                    {
+                        break;
+                    }
                 }
             }
         }

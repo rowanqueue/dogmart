@@ -18,12 +18,12 @@ public class PetManager
         Pet pet = new Pet(gridPos);
         pets.Add(pet);
     }
-    public void AddPeg(Vector2Int gridPos){
-        Peg peg = new Peg(gridPos);
+    public void AddPeg(){
+        Peg peg = new Peg(new Vector2Int(Services.Grid.size.x-1,Services.Grid.size.y/2));
         pegs.Add(peg);
     }
-    public void AddFood(Vector2Int gridPos){
-        Food food = new Food(gridPos,Bait.Mayo);
+    public void AddFood(){
+        Food food = new Food(new Vector2Int(0,Services.Grid.size.y/2),Bait.Mayo);
         foods.Add(food);
     }
 

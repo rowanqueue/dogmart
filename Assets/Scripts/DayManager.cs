@@ -70,6 +70,10 @@ public class DayManager
 
     public void EndDay()
     {
+        Services.DayManager.money-= Services.PetManager.pets.Count*Services.GameController.petUpkeepPerDay;
+        if(Services.DayManager.money < 0){
+            Debug.Log("WAAAAAAH i am broke");
+        }
         currentState = dayState.End;
         if(day < firstWeekLengths.Length)
         {
