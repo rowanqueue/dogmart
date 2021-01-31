@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Cursor.SetCursor(cursors[holdingSomething ? 1 : 0],Vector2.zero,CursorMode.Auto);
+        Cursor.SetCursor(cursors[holdingSomething ? 1 : 0],Vector2.zero,CursorMode.ForceSoftware);
         if(Input.GetMouseButtonDown(0)){
             Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             //Debug.Log(Services.Grid.MouseGridPosition());

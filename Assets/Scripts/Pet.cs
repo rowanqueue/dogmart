@@ -53,6 +53,10 @@ public class Pet
 
     public Traits traits;
     public bool hasOwner;
+    public float nextSwitchTime;
+    float timeSwitch = 0.5f;
+    bool animState = false;
+    List<Sprite> sprites;
     public Pet(Vector2Int gridPos){
         this.gridPosition = gridPos;
         this.traits = new Traits();
@@ -62,6 +66,8 @@ public class Pet
         lifeSpan = Services.GameController.defaultLifeSpan;
         state = State.Moving;
         burnStartTime = -1f;
+        nextSwitchTime = Time.time+timeSwitch;
+        sprites = new List<Sprite>();
         CreateVisual();
         GetGoal();
         while(search.steps.Count == 0){
@@ -77,6 +83,8 @@ public class Pet
         gameObject.transform.position-=Vector3.up;
         spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         spriteRenderer.sprite = Services.Visuals.GetVisual(this);
+        sprites.Add(spriteRenderer.sprite);
+        sprites.Add(Services.Visuals.GetVisual2(this));
     }
 
     public void Update(){
@@ -94,6 +102,11 @@ public class Pet
             spriteRenderer.transform.localEulerAngles += (new Vector3(0,0,90)-spriteRenderer.transform.localEulerAngles)*0.1f;
             spriteRenderer.color = Color.gray;
             return;
+        }
+        spriteRenderer.sprite = sprites[animState ? 1 : 0];
+        if(Time.time >= nextSwitchTime){
+            animState = !animState;
+            nextSwitchTime = Time.time+timeSwitch;
         }
         if(burnStartTime >= 0f){
             Vector3 burnTarget =  (Vector3)Services.Grid.GridToReal(gridPosition) + new Vector3(0,Mathf.Cos((Time.time*(10f+specialNumber*0.05f))+specialNumber)*0.1f);
