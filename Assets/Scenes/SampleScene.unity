@@ -311,6 +311,11 @@ MonoBehaviour:
   positiveTraitTradeGain: 1.5
   negativeTraitTradeLoss: 1
   startingTimeBetweenPets: 5
+  petBonusToSpawnTime: 0.1
+  defaultLifeSpan: 180
+  petUpkeepPerDay: 1
+  pegCost: 1
+  baitCost: 1
   petStartingPos: {x: 8, y: 0}
 --- !u!4 &1190825744
 Transform:

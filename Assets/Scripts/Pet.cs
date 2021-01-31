@@ -161,9 +161,25 @@ public struct Traits{
     public Pattern pattern;
     public Bait bait;
     public void RandomTraits(){
+        float val = Random.value;
         this.hue = (Hue)Random.Range(1,4);
         this.shape = (Shape)Random.Range(1,5);
-        this.pattern = (Pattern)Random.Range(1,5);
+        int patternInt = 1;
+        val = Random.value;
+        if(val < 0.45f){
+            patternInt = 1;
+        }else if(val < 0.65f){
+            patternInt = 2;
+        }else if(val < 0.90f){
+            patternInt = 3;
+        }else{
+            patternInt = 4;
+        }
+        if(Services.PetManager.pets.Count <= 1){
+            patternInt = 1;
+        }
+        
+        this.pattern = (Pattern)patternInt;
         this.bait = (Bait)Random.Range(1,5);
     }
     public override string ToString(){
