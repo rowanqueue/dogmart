@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CustomerManager
 { 
@@ -236,6 +237,8 @@ public class Customer
     public bool inQueue = false;
     public GameObject want;
     List<SpriteRenderer> wantSpriteRenderers;
+    public Image timer;
+
 
     public Customer(Traits need,float maxWait,int linePos)
     {
@@ -248,6 +251,7 @@ public class Customer
 
     public void CreateVisual()
     {
+        
         gameObject = GameObject.Instantiate(Services.GameController.CustomerPrefab, Services.GameController.CustomerLine.transform.position + new Vector3(linePosition,0,0), Quaternion.identity, Services.GameController.CustomerLine.transform);
         spriteRenderers = new List<SpriteRenderer>();
         spriteRenderers.Add(gameObject.GetComponent<SpriteRenderer>());
@@ -258,6 +262,9 @@ public class Customer
         spriteRenderers[1].sprite = Services.Visuals.customerEyes[Random.Range(0,4)];
         spriteRenderers[2].sprite = Services.Visuals.customerMouths[Random.Range(0,4)];
         spriteRenderers[3].sprite = Services.Visuals.customerNoses[Random.Range(0,4)];
+
+        timer = gameObject.transform.GetChild(0).transform.GetChild(1).GetComponent<Image>();
+
         gameObject.SetActive(false);
         GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
         wantSpriteRenderers = new List<SpriteRenderer>();
@@ -301,12 +308,15 @@ public class Customer
         if (inQueue) {
             currentWaitTime += Time.deltaTime;
             linePosition = Services.CustomerManager.queue.IndexOf(this);
+            timer.fillAmount = currentWaitTime / maxWaitTime;
         } 
         Vector3 goal = new Vector3(linePosition * Services.CustomerManager.customerDist, 0, 0);
         gameObject.SetActive(inQueue);
         if (inQueue)
         {
             gameObject.transform.localPosition = gameObject.transform.localPosition + (goal - gameObject.transform.localPosition) * 0.05f * (Time.deltaTime / 0.016f);
+
+
         }
         else
         {

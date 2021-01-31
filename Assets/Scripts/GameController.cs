@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public GameObject CustomerPrefab;
     public GameObject CustomerLine;
     public GameObject want;
+    public Canvas timer;
     public Camera camera;
 
     [Header(("Grabbing pets"))]
