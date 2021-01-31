@@ -25,8 +25,12 @@ public class DayManager
     public float timeBetweenCustomers = 10;
     public float currentTimeBetween = 0;
 
+    public Color dayColor;
+    public Color nightColor = Color.black;
+
     public void Initialize()
     {
+        dayColor = Services.GameController.camera.backgroundColor;
         currentTime = 0;
         currentDayLength = firstWeekLengths[0];
         currentState = dayState.Prep;
@@ -36,6 +40,7 @@ public class DayManager
 
     public void Update()
     {
+        Services.GameController.moneyP.text = "$" + money;
         Tick();
 
         if(currentTimeBetween > timeBetweenCustomers && currentState == dayState.Serve)
@@ -60,11 +65,13 @@ public class DayManager
     {
         if (currentState == dayState.Serve)
         {
+            Services.GameController.camera.backgroundColor = Color.Lerp(dayColor, nightColor, currentTime / currentDayLength);
             currentTime += Time.deltaTime;
             currentTimeBetween += Time.deltaTime;
         }
         else if (currentState == dayState.Prep)
         {
+            Services.GameController.camera.backgroundColor = Color.Lerp(nightColor, dayColor, prepTime / prepLenght);
             prepTime += Time.deltaTime;
         }
     }

@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     public GameObject foodPrefab;
     public GameObject CustomerPrefab;
     public GameObject CustomerLine;
+    public TextMesh moneyP;
     public GameObject want;
     public Canvas timer;
     public Camera camera;
@@ -133,9 +134,9 @@ public class GameController : MonoBehaviour
         heldPet.held = false;
         Vector3 mousePos = camera.ScreenToWorldPoint((Vector3)Input.mousePosition);
         mousePos.z = 0;
-        float dist = Vector3.Distance(mousePos, Services.GameController.CustomerLine.transform.position);
+        float dist = Vector2.Distance(mousePos, Services.GameController.CustomerLine.transform.position);
         print("FUCK"+ mousePos + " & " + Services.GameController.CustomerLine.transform.position + "\n" + dist);
-        if (dist < 1)
+        if (dist < 1 && Services.CustomerManager.queue.Count > 0)
         {
             Services.CustomerManager.queue[0].GotPet(heldPet);
         }
