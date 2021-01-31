@@ -335,7 +335,14 @@ public class Customer
         }
         else
         {
-            gameObject.transform.localPosition = new Vector3(100,0,0);
+            if (!satisfied)
+            {
+                gameObject.transform.localPosition = gameObject.transform.localPosition + (goal - gameObject.transform.localPosition) * 0.05f * (Time.deltaTime / 0.016f);
+            }
+            else
+            {
+                gameObject.transform.localPosition = new Vector3(100, 0, 0);
+            }
         }
 
         if (currentWaitTime > maxWaitTime)
@@ -372,7 +379,9 @@ public class Customer
         if (!satisfied)
         {
             Services.CustomerManager.holdOver.Add(this);
-            gameObject.SetActive(false);
+            linePosition = -100;
+            gameObject.transform.position = new Vector3(-100, 0, 0);
+
         }
         else
         {
@@ -387,7 +396,8 @@ public class Customer
     public void GotPet(Pet pet)
     {
         float happ = pet.traits.CompareTrait(needs);
-        if (!pet.dead && happ > 0) {
+        Debug.Log(happ);
+        if (!pet.dead && happ > 1) {
             
             satisfied = true;
             leaveQueue();
