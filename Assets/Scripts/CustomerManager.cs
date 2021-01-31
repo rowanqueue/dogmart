@@ -154,6 +154,11 @@ public class CustomerManager
             cust.Update();
         }
 
+        foreach (Customer cust in holdOver)
+        {
+            cust.Update();
+        }
+
         DrainQueue();
     }
 
@@ -347,7 +352,7 @@ public class Customer
 
         if (currentWaitTime > maxWaitTime)
         {
-            GameObject reaction = GameObject.Instantiate(Services.GameController.reactionPrefab,gameObject.transform.position,Quaternion.identity) as GameObject;
+            
             leaveQueue();
         }
         if (linePosition == 0 ){
@@ -380,7 +385,8 @@ public class Customer
         {
             Services.CustomerManager.holdOver.Add(this);
             linePosition = -100;
-            gameObject.transform.position = new Vector3(-100, 0, 0);
+            GameObject reaction = GameObject.Instantiate(Services.GameController.reactionPrefab, gameObject.transform.position, Quaternion.identity) as GameObject;
+
 
         }
         else
@@ -407,6 +413,7 @@ public class Customer
         else
         {
             satisfied = false;
+
             leaveQueue();
         }
 
