@@ -29,7 +29,6 @@ public class CustomerManager
         holdOver = new List<Customer>();
         done = new List<Customer>();
         todaysCustomers = new List<Customer>();
-        CreateTodaysCustomers(0);
     }
 
     public Customer AddCustomer(float waitTime)
@@ -264,7 +263,7 @@ public class Customer
     public void CreateVisual()
     {
         
-        gameObject = GameObject.Instantiate(Services.GameController.CustomerPrefab, Services.GameController.CustomerLine.transform.position + new Vector3(linePosition,0,0), Quaternion.identity, Services.GameController.CustomerLine.transform);
+        gameObject = GameObject.Instantiate(Services.GameController.CustomerPrefab, Services.GameController.CustomerLine.transform.position + new Vector3(100,0,0), Quaternion.identity, Services.GameController.CustomerLine.transform);
         spriteRenderers = new List<SpriteRenderer>();
         spriteRenderers.Add(gameObject.GetComponent<SpriteRenderer>());
         for(int i = 1; i < gameObject.transform.childCount;i++){
@@ -388,9 +387,18 @@ public class Customer
     public void GotPet(Pet pet)
     {
         float happ = pet.traits.CompareTrait(needs);
-        satisfied = true;
-        leaveQueue();
-        pet.gameObject.SetActive(false);
+        if (!pet.dead && happ > 0) {
+            
+            satisfied = true;
+            leaveQueue();
+            pet.gameObject.SetActive(false);
+            Services.PetManager.pets.Remove(pet);
+        }
+        else
+        {
+            satisfied = false;
+            leaveQueue();
+        }
 
     }
 }

@@ -27,9 +27,11 @@ public class DayManager
 
     public Color dayColor;
     public Color nightColor = Color.black;
+    public bool lost;
 
     public void Initialize()
     {
+        lost = false;
         dayColor = Services.GameController.camera.backgroundColor;
         currentTime = 0;
         currentDayLength = firstWeekLengths[0];
@@ -40,6 +42,11 @@ public class DayManager
 
     public void Update()
     {
+        if(money < 1)
+        {
+            lost = true; 
+        }
+
         Services.GameController.moneyP.text = "$" + money;
         Tick();
 
@@ -63,16 +70,19 @@ public class DayManager
 
     public void Tick()
     {
-        if (currentState == dayState.Serve)
+        if (!lost)
         {
-            Services.GameController.camera.backgroundColor = Color.Lerp(dayColor, nightColor, currentTime / currentDayLength);
-            currentTime += Time.deltaTime;
-            currentTimeBetween += Time.deltaTime;
-        }
-        else if (currentState == dayState.Prep)
-        {
-            Services.GameController.camera.backgroundColor = Color.Lerp(nightColor, dayColor, prepTime / prepLenght);
-            prepTime += Time.deltaTime;
+            if (currentState == dayState.Serve)
+            {
+                Services.GameController.camera.backgroundColor = Color.Lerp(dayColor, nightColor, currentTime / currentDayLength);
+                currentTime += Time.deltaTime;
+                currentTimeBetween += Time.deltaTime;
+            }
+            else if (currentState == dayState.Prep)
+            {
+                Services.GameController.camera.backgroundColor = Color.Lerp(nightColor, dayColor, prepTime / prepLenght);
+                prepTime += Time.deltaTime;
+            }
         }
     }
 
@@ -103,12 +113,12 @@ public class DayManager
         currentState = dayState.Serve;
         prepTime = 0;
         Debug.Log("PrepTimeEnded");
+        Services.CustomerManager.CreateTodaysCustomers(day);
     }
 
     public void StartNextDay()
     {
         day++;
         currentState = dayState.Prep;
-        Services.CustomerManager.CreateTodaysCustomers(day);
     }
 }
