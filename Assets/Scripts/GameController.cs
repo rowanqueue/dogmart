@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     public Peg heldPeg;
     public Food heldFood;
     public GameObject reactionPrefab;
+    public Texture2D[] cursors;
     [Header("Tuning")]
     public float petSpeed = 0.05f;
     public float petWaitMin = 0.15f;
@@ -61,6 +62,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Cursor.SetCursor(cursors[holdingSomething ? 1 : 0],Vector2.zero,CursorMode.Auto);
         if(Input.GetMouseButtonDown(0)){
             Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             //Debug.Log(Services.Grid.MouseGridPosition());
