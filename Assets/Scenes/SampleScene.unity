@@ -301,6 +301,7 @@ MonoBehaviour:
     type: 3}
   CustomerLine: {fileID: 1857425024}
   want: {fileID: 1045270525034650176, guid: d1f7f91b99c809c4f8060d1de691a3b7, type: 3}
+  timer: {fileID: 2086642669798119294, guid: 67d8833675dd1c9478dcb569222ca1b1, type: 3}
   camera: {fileID: 519420031}
   holdingSomething: 0
   whatHolding: 0
@@ -415,7 +416,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1857425024}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.67, y: 2.22, z: 0}
+  m_LocalPosition: {x: 11.94, y: 2.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
