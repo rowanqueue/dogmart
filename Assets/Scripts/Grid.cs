@@ -22,8 +22,8 @@ public class Grid
     public Vector2Int MouseGridPosition(){
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2Int result = Vector2Int.zero;
-        result.x = Mathf.FloorToInt(mousePosition.x/gridSize);
-        result.y = Mathf.FloorToInt(mousePosition.y/gridSize);
+        result.x = Mathf.RoundToInt(mousePosition.x/gridSize);
+        result.y = Mathf.RoundToInt(mousePosition.y/gridSize);
         return result;
     }
     public Vector2Int RealToGrid(Vector2 pos){

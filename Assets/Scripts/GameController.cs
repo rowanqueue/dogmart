@@ -27,16 +27,21 @@ public class GameController : MonoBehaviour
     public float petMinRangeToFinish = 0.1f;
     public float positiveTraitTradeGain = 1.5f;
     public float negativeTraitTradeLoss = 1f;
+    public float startingTimeBetweenPets = 1f;
+    public float petBonusToSpawnTime = 0.1f;
+    public float defaultLifeSpan = 60f*3f;
+    public float petUpkeepPerDay = 1f;
+    public float pegCost;
+    public float baitCost;
+    public Vector2Int petStartingPos;
 
     // Start is called before the first frame update
     void Awake()
     {
         InitializeServices();
-        for(var i = 0; i < 5;i++){
-            Services.PetManager.AddPet(Services.Grid.RandomPosition());
-        }
-        Services.PetManager.AddPeg(new Vector2Int(0,0));
-        Services.PetManager.AddFood(new Vector2Int(Services.Grid.size.x-1,0));
+        Services.PetManager.AddPeg();
+        Services.PetManager.AddFood();
+        Services.PetManager.AddPet(petStartingPos);
     }
 
     void InitializeServices(){
@@ -47,6 +52,8 @@ public class GameController : MonoBehaviour
         Services.PetManager.Initialize();
         Services.CustomerManager = new CustomerManager();
         Services.CustomerManager.Initialize();
+        Services.DayManager = new DayManager();
+        Services.DayManager.Initialize();
     }
 
     // Update is called once per frame
@@ -99,6 +106,7 @@ public class GameController : MonoBehaviour
         }
         Services.PetManager.Update();
         Services.CustomerManager.Update();
+        Services.DayManager.Update();
     }
     void GrabPet(Pet pet){
         holdingSomething = true;
@@ -131,10 +139,16 @@ public class GameController : MonoBehaviour
 
     }
     void GrabPeg(Peg peg){
+        if(Services.DayManager.money < pegCost){
+            Debug.Log("NO MONEY!!");
+            return;
+        }
+        Services.DayManager.money-=pegCost;
         holdingSomething = true;
         whatHolding = 2;
         heldPeg = peg;
         peg.held = true;
+        Services.PetManager.AddPeg();
     }
     void DropPeg(){
         holdingSomething = false;
@@ -145,10 +159,16 @@ public class GameController : MonoBehaviour
         heldPeg = null;
     }
     void GrabFood(Food food){
+        if(Services.DayManager.money < baitCost){
+            Debug.Log("NO MONEY!!");
+            return;
+        }
+        Services.DayManager.money-=baitCost;
         holdingSomething = true;
         whatHolding = 3;
         heldFood = food;
         food.held = true;
+        Services.PetManager.AddFood();
     }
     void DropFood(){
         holdingSomething = false;
