@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GameController : MonoBehaviour
     public GameObject foodPrefab;
     public GameObject CustomerPrefab;
     public GameObject CustomerLine;
+    public GameObject dead;
     public TextMesh moneyP;
     public GameObject want;
     public Canvas timer;
@@ -63,6 +65,15 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Services.DayManager.lost)
+        {
+            dead.SetActive(true);
+        }
+        else
+        {
+            dead.SetActive(false);
+        }
+
         Cursor.SetCursor(cursors[holdingSomething ? 1 : 0],Vector2.zero,CursorMode.Auto);
         if(Input.GetMouseButtonDown(0)){
             Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -174,5 +185,10 @@ public class GameController : MonoBehaviour
         heldFood.installed = true;
         heldFood.held = false;
         heldFood = null;
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

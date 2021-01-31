@@ -80,6 +80,10 @@ public class Pet
     }
 
     public void Update(){
+        if (Services.DayManager.lost)
+        {
+            dead = true;
+        }
         if(held){
             spriteRenderer.sortingOrder = 100;
             gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
