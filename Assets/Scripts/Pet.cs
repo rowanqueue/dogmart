@@ -28,17 +28,27 @@ public enum Bait{
     Fish,
     IceCream
 }
+public enum State{
+    Resting,
+    Moving
+}
 
 public class Pet
 {
+    public bool dead;
+    public State state;//0: resting, 1: moving
     public bool held;
     public Vector2Int gridPosition;
     public Vector2Int goal;
     public Vector2Int nextPosition;
     AStarSearch search;
     public GameObject gameObject;
-    SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     float nextMovementAllowed;
+    float restEndTime;
+    float specialNumber;
+    float birthTime;
+    float lifeSpan;
 
     public Traits traits;
     public Pet(Vector2Int gridPos, Traits traits){
@@ -52,6 +62,10 @@ public class Pet
         this.traits = new Traits();
         this.traits.RandomTraits();
         traits.shape = Shape.Circle;
+        specialNumber = Random.Range(0f,10f);
+        birthTime = Time.time;
+        lifeSpan = Services.GameController.defaultLifeSpan;
+        state = State.Moving;
         CreateVisual();
         GetGoal();
         while(search.steps.Count == 0){
@@ -61,6 +75,7 @@ public class Pet
     }
     void CreateVisual(){
         gameObject = GameObject.Instantiate(Services.GameController.petPrefab,(Vector2)gridPosition,Quaternion.identity,Services.GameController.transform) as GameObject;
+        gameObject.transform.position-=Vector3.up;
         spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         spriteRenderer.sprite = Services.Visuals.GetVisual(this);
     }
@@ -71,8 +86,22 @@ public class Pet
             gameObject.transform.position = new Vector3(gameObject.transform.position.x+Mathf.Sin(Time.time*15f)*0.1f,gameObject.transform.position.y+Mathf.Sin(Time.time*10f)*0.05f,0f);
             return;
         }
+        if(Time.time >= birthTime+lifeSpan){
+            dead = true;
+        }
+        if(dead){ 
+            gameObject.transform.position += ((Vector3)Services.Grid.GridToReal(gridPosition)-gameObject.transform.position)*Services.GameController.petSpeed;
+            spriteRenderer.transform.localEulerAngles += (new Vector3(0,0,90)-spriteRenderer.transform.localEulerAngles)*0.1f;
+            spriteRenderer.color = Color.gray;
+            return;
+        }
         Vector2Int targetPosition = gridPosition;
-        if(Time.time >= nextMovementAllowed){
+        if(state == State.Resting){
+            if(Time.time >= restEndTime){
+                state = State.Moving;
+            }
+        }
+        if(state == State.Moving && Time.time >= nextMovementAllowed){
             if(goal != new Vector2Int(-1,-1)){
                 //we are currently moving to something
                 if(Vector2.Distance(gameObject.transform.position,nextPosition) < Services.GameController.petMinRangeToFinish){
@@ -91,13 +120,20 @@ public class Pet
                     targetPosition = gridPosition;
                 }
             }else{
-                GetGoal();
+                if(Random.value < 0.5f){
+                    state = State.Resting;
+                    restEndTime = Time.time+Random.Range(0.5f,2f);
+                }else{
+                    GetGoal();
+                }
+                
             }
         }
         if(Services.Grid.InGrid(targetPosition) == false){
             targetPosition = gridPosition;
         }
-        gameObject.transform.position += ((Vector3)Services.Grid.GridToReal(targetPosition)-gameObject.transform.position)*Services.GameController.petSpeed;
+        Vector3 target =  (Vector3)Services.Grid.GridToReal(targetPosition) + new Vector3(0,Mathf.Cos((Time.time*(10f+specialNumber*0.05f))+specialNumber)*0.1f);
+        gameObject.transform.position += (target-gameObject.transform.position)*Services.GameController.petSpeed;
     }
     public void GetGoal(){
         goal = gridPosition + new Vector2Int(Random.Range(-2,3),Random.Range(-2,3));

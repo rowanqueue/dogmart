@@ -310,6 +310,8 @@ MonoBehaviour:
   petMinRangeToFinish: 0.1
   positiveTraitTradeGain: 1.5
   negativeTraitTradeLoss: 1
+  startingTimeBetweenPets: 5
+  petStartingPos: {x: 8, y: 0}
 --- !u!4 &1190825744
 Transform:
   m_ObjectHideFlags: 0
