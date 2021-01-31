@@ -251,7 +251,9 @@ public class Customer
     {
         
         gameObject = GameObject.Instantiate(Services.GameController.CustomerPrefab, Services.GameController.CustomerLine.transform.position + new Vector3(linePosition,0,0), Quaternion.identity, Services.GameController.CustomerLine.transform);
+
         timer = gameObject.transform.GetChild(0).transform.GetChild(1).GetComponent<Image>();
+
         gameObject.SetActive(false);
         if(needs.hue != Hue.None)
         {
