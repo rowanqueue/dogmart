@@ -231,16 +231,17 @@ public class Customer
     public int linePosition;
     public float payout = 50;
     public GameObject gameObject;
+    List<SpriteRenderer> spriteRenderers;
     public bool satisfied = false;
     public bool inQueue = false;
-    public List<GameObject> want;
+    public GameObject want;
+    List<SpriteRenderer> wantSpriteRenderers;
 
     public Customer(Traits need,float maxWait,int linePos)
     {
         this.needs = need;
         this.maxWaitTime = maxWait;
         this.linePosition = linePos;
-        want = new List<GameObject>();
         inQueue = false;
         CreateVisual();
     }
@@ -248,42 +249,50 @@ public class Customer
     public void CreateVisual()
     {
         gameObject = GameObject.Instantiate(Services.GameController.CustomerPrefab, Services.GameController.CustomerLine.transform.position + new Vector3(linePosition,0,0), Quaternion.identity, Services.GameController.CustomerLine.transform);
+        spriteRenderers = new List<SpriteRenderer>();
+        spriteRenderers.Add(gameObject.GetComponent<SpriteRenderer>());
+        foreach(Transform child in gameObject.transform){
+            spriteRenderers.Add(child.gameObject.GetComponent<SpriteRenderer>());
+        }
+        spriteRenderers[0].sprite = Services.Visuals.customerBodies[Random.Range(0,4)];
+        spriteRenderers[1].sprite = Services.Visuals.customerEyes[Random.Range(0,4)];
+        spriteRenderers[2].sprite = Services.Visuals.customerMouths[Random.Range(0,4)];
+        spriteRenderers[3].sprite = Services.Visuals.customerNoses[Random.Range(0,4)];
         gameObject.SetActive(false);
+        GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
+        wantSpriteRenderers = new List<SpriteRenderer>();
+        foreach(Transform child in gob.transform.GetChild(0)){
+            wantSpriteRenderers.Add(child.gameObject.GetComponent<SpriteRenderer>());
+        }
+        want = gob;
+        gob.SetActive(false);
+        if (needs.shape != Shape.None)
+        {
+            wantSpriteRenderers[totalNeeds].sprite = Services.Visuals.wantShapes[(int)needs.shape-1];
+            totalNeeds++;
+            
+        }
         if(needs.hue != Hue.None)
         {
+            wantSpriteRenderers[totalNeeds].sprite = Services.Visuals.wantColors[(int)needs.hue-1];
             totalNeeds++;
-            GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
-            gob.GetComponent<TextMesh>().text = "Need:" + needs.hue;
-            want.Add(gob);
-            gob.SetActive(false);
         }
 
         if (needs.pattern != Pattern.None)
         {
+            wantSpriteRenderers[totalNeeds].sprite = Services.Visuals.wantPatterns[(int)needs.pattern-1];
             totalNeeds++;
-            GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
-            gob.GetComponent<TextMesh>().text = "Need:" + needs.pattern;
-            want.Add(gob);
-            gob.SetActive(false);
         }
-
-        if (needs.shape != Shape.None)
-        {
-            totalNeeds++;
-            GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
-            gob.GetComponent<TextMesh>().text = "Need:" + needs.shape;
-            want.Add(gob);
-            gob.SetActive(false);
-        }
-
-
         if (needs.bait != Bait.None)
         { 
+            wantSpriteRenderers[totalNeeds].sprite = Services.Visuals.baits[(int)needs.bait-1];
             totalNeeds++;
-            GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
-            gob.GetComponent<TextMesh>().text = "Need:" + needs.bait;
-            want.Add(gob);
-            gob.SetActive(false);
+        }
+        for(var i = 0; i < wantSpriteRenderers.Count;i++){
+            wantSpriteRenderers[i].enabled = false;
+            if(i < totalNeeds){
+                wantSpriteRenderers[i].enabled = true;
+            }
         }
     }
 
@@ -309,18 +318,14 @@ public class Customer
             leaveQueue();
         }
         if (linePosition == 0 ){
-            for (int i = 0; i < want.Count; i++) {
-                want[i].SetActive(true);
-                Vector3 pos = new Vector3(0, 0.05f + (i + 1) * Services.CustomerManager.textDist, 0);
-                want[i].transform.localPosition = want[i].transform.localPosition + (pos - want[i].transform.localPosition) * 0.05f * (Time.deltaTime / 0.016f);
-            }
+            want.SetActive(true);
+            Vector3 pos = new Vector3(0, 0.05f + (1) * Services.CustomerManager.textDist, 0);
+            want.transform.localPosition = want.transform.localPosition + (pos - want.transform.localPosition) * 0.05f * (Time.deltaTime / 0.016f);
+ 
         }
         else
         {
-            for (int i = 0; i < want.Count; i++)
-            {
-                want[i].SetActive(false);
-            }
+            want.SetActive(false);
         }
     }
 

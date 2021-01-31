@@ -14,6 +14,15 @@ public class Visuals : MonoBehaviour
     public Sprite[] baitSplotches;
     public Sprite[] baitButtons;
 
+    public Sprite[] customerBodies;
+    public Sprite[] customerEyes;
+    public Sprite[] customerMouths;
+    public Sprite[] customerNoses;
+
+    public Sprite[] wantShapes;
+    public Sprite[] wantPatterns;
+    public Sprite[] wantColors;
+
 
 
 
