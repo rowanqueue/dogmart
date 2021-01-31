@@ -278,7 +278,8 @@ public class Customer
         timer = gameObject.transform.GetChild(0).transform.GetChild(1).GetComponent<Image>();
 
         gameObject.SetActive(false);
-        GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position + new Vector3(0, 0.05f + totalNeeds * 0.1f, 0), Quaternion.identity, gameObject.transform);
+        GameObject gob = GameObject.Instantiate(Services.GameController.want, gameObject.transform.position, Quaternion.identity, gameObject.transform);
+        gob.transform.localPosition = new Vector3(-0.848f, -2.612f, 0);
         wantSpriteRenderers = new List<SpriteRenderer>();
         Want w = gob.GetComponent<Want>();
         foreach(SpriteRenderer s in w.spriteRenderers){
@@ -345,8 +346,8 @@ public class Customer
         }
         if (linePosition == 0 ){
             want.SetActive(true);
-            Vector3 pos = new Vector3(0, 0.05f + (1) * Services.CustomerManager.textDist, 0);
-            want.transform.localPosition = want.transform.localPosition + (pos - want.transform.localPosition) * 0.05f * (Time.deltaTime / 0.016f);
+            //Vector3 pos = new Vector3(0, 0.05f + (1) * Services.CustomerManager.textDist, 0);
+            //want.transform.localPosition = want.transform.localPosition + (pos - want.transform.localPosition) * 0.05f * (Time.deltaTime / 0.016f);
  
         }
         else
