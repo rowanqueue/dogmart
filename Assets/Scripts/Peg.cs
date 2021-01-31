@@ -11,12 +11,14 @@ public class Peg
     public int health = 20;
     public int maxPetNumber = 5;
     public float maxLength = 2.5f;
+    SpriteRenderer spriteRenderer;
     public List<Pet> pets;
     public List<LineRenderer> ropes;
 
     public Peg(Vector2Int gridPos){
         this.gridPosition = gridPos;
         gameObject = GameObject.Instantiate(Services.GameController.pegPrefab,(Vector2)gridPosition,Quaternion.identity,Services.GameController.transform) as GameObject;
+        spriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         ropes = new List<LineRenderer>();
         ropes.Add(gameObject.transform.GetChild(1).GetComponent<LineRenderer>());
         ropes[0].positionCount = 5;
@@ -25,18 +27,24 @@ public class Peg
     }
     public void Update(){
         if(held){
+            spriteRenderer.sortingOrder = 100;
             gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             gameObject.transform.position = new Vector3(gameObject.transform.position.x+Mathf.Sin(Time.time*15f)*0.1f,gameObject.transform.position.y+Mathf.Sin(Time.time*10f)*0.05f,0f);
             return;
         }
         gameObject.transform.position = (Vector2)gridPosition;
         if(installed){
-            gameObject.transform.GetChild(0).localEulerAngles = new Vector3(0,0,0);
+            spriteRenderer.sprite = Services.Visuals.pegs[1];
         }else{
-            gameObject.transform.GetChild(0).localEulerAngles = new Vector3(0,0,90);
+            spriteRenderer.sprite = Services.Visuals.pegs[0];
         }
-
-        if(installed == false){return;}
+        spriteRenderer.sortingOrder = (5*(Services.Grid.size.y-gridPosition.y));
+        if(installed == false){
+            if(held == false){
+                gameObject.transform.position = new Vector2(13.5f,2.8f);
+            }
+            return;
+        }
         for(int i = 0; i < pets.Count;i++){
             ropes[i].enabled = true;
             Pet pet = pets[i];
@@ -57,6 +65,7 @@ public class Peg
             GameObject.Destroy(gameObject);
             Services.PetManager.pegs.Remove(this);
         }
+        
     }
     public Vector2Int OppositeEnd(Pet pet){
         Vector2Int difference = gridPosition - pet.gridPosition;

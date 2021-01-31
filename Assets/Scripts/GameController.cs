@@ -28,16 +28,21 @@ public class GameController : MonoBehaviour
     public float petMinRangeToFinish = 0.1f;
     public float positiveTraitTradeGain = 1.5f;
     public float negativeTraitTradeLoss = 1f;
+    public float startingTimeBetweenPets = 1f;
+    public float petBonusToSpawnTime = 0.1f;
+    public float defaultLifeSpan = 60f*3f;
+    public float petUpkeepPerDay = 1f;
+    public float pegCost;
+    public float baitCost;
+    public float baitEffectRadius;
+    public float startingMoney;
+    public Vector2Int petStartingPos;
 
     // Start is called before the first frame update
     void Awake()
     {
         InitializeServices();
-        for(var i = 0; i < 5;i++){
-            Services.PetManager.AddPet(Services.Grid.RandomPosition());
-        }
-        Services.PetManager.AddPeg(new Vector2Int(0,0));
-        Services.PetManager.AddFood(new Vector2Int(Services.Grid.size.x-1,0));
+        Services.PetManager.AddPet(petStartingPos);
     }
 
     void InitializeServices(){
@@ -56,7 +61,7 @@ public class GameController : MonoBehaviour
     void Update()
     {
         if(Input.GetMouseButtonDown(0)){
-            Debug.Log(Services.Grid.MouseGridPosition());
+            Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if(Input.GetMouseButtonDown(0)){
@@ -115,7 +120,10 @@ public class GameController : MonoBehaviour
     void DropPet(){
         holdingSomething = false;
         whatHolding = 0;
-        heldPet.gridPosition = Services.Grid.MouseGridPosition();
+        
+        if(Services.Grid.InGrid(Services.Grid.MouseGridPosition())){
+            heldPet.gridPosition = Services.Grid.MouseGridPosition();
+        }
         foreach(Peg peg in Services.PetManager.pegs){
             if(peg.gridPosition == heldPet.gridPosition || Vector2.Distance(peg.gameObject.transform.position,heldPet.gameObject.transform.position) < 0.75f){
                 peg.AttachPetToPeg(heldPet);

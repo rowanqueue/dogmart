@@ -31,6 +31,7 @@ public class DayManager
         currentDayLength = firstWeekLengths[0];
         currentState = dayState.Prep;
         timeBetweenCustomers = standardTimeBetweenCustomers;
+        money = Services.GameController.startingMoney;
     }
 
     public void Update()
@@ -70,6 +71,10 @@ public class DayManager
 
     public void EndDay()
     {
+        Services.DayManager.money-= Services.PetManager.pets.Count*Services.GameController.petUpkeepPerDay;
+        if(Services.DayManager.money < 0){
+            Debug.Log("WAAAAAAH i am broke");
+        }
         currentState = dayState.End;
         if(day < firstWeekLengths.Length)
         {
