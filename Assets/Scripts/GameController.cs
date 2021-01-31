@@ -33,6 +33,8 @@ public class GameController : MonoBehaviour
     public float petUpkeepPerDay = 1f;
     public float pegCost;
     public float baitCost;
+    public float baitEffectRadius;
+    public float startingMoney;
     public Vector2Int petStartingPos;
 
     // Start is called before the first frame update

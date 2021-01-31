@@ -60,6 +60,7 @@ public class Pet
         birthTime = Time.time;
         lifeSpan = Services.GameController.defaultLifeSpan;
         state = State.Moving;
+        burnStartTime = -1f;
         CreateVisual();
         GetGoal();
         while(search.steps.Count == 0){

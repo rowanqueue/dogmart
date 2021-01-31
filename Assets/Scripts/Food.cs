@@ -11,7 +11,6 @@ public class Food
     public bool held;
     public bool installed;
     public int health = 50;
-    public float maxLength = 2.5f;
     public Food(Vector2Int gridPos, Bait bait){
         this.gridPosition = gridPos;
         this.bait = bait;
@@ -41,7 +40,7 @@ public class Food
         foreach(Pet pet in Services.PetManager.pets){
             if(pet.traits.bait == bait){
                 float distance = Vector2.Distance(pet.gameObject.transform.position,gameObject.transform.position);
-                if(distance <= maxLength){
+                if(distance <= Services.GameController.baitEffectRadius){
                     if(pet.goal != gridPosition){
                         pet.SetGoal(gridPosition);
                     }

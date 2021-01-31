@@ -31,6 +31,7 @@ public class DayManager
         currentDayLength = firstWeekLengths[0];
         currentState = dayState.Prep;
         timeBetweenCustomers = standardTimeBetweenCustomers;
+        money = Services.GameController.startingMoney;
     }
 
     public void Update()

@@ -678,8 +678,10 @@ MonoBehaviour:
   petBonusToSpawnTime: 0.1
   defaultLifeSpan: 180
   petUpkeepPerDay: 1
-  pegCost: 0
-  baitCost: 0
+  pegCost: 1
+  baitCost: 1
+  baitEffectRadius: 4
+  startingMoney: 100
   petStartingPos: {x: 7, y: 0}
 --- !u!4 &1190825744
 Transform:
@@ -1121,17 +1123,17 @@ PrefabInstance:
     - target: {fileID: 5999478087729233869, guid: a51427ec9bce2e34ea02195694bab10b,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5999478087729233869, guid: a51427ec9bce2e34ea02195694bab10b,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5999478087729233869, guid: a51427ec9bce2e34ea02195694bab10b,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5999478087729233869, guid: a51427ec9bce2e34ea02195694bab10b,
         type: 3}

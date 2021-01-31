@@ -7,6 +7,8 @@ public class Grid
     public bool[,] grid;
     public float gridSize = 1.0f;
     public Vector2Int size = new Vector2Int(15,9);
+    Vector2Int[] directions = new Vector2Int[]{Vector2Int.up,new Vector2Int(1,1),Vector2Int.right, new Vector2Int(1,-1),Vector2Int.down,new Vector2Int(-1,-1),Vector2Int.left, new Vector2Int(-1,1)};
+
     public void Initialize(){
         grid = new bool[size.x,size.y];
     }
@@ -24,6 +26,15 @@ public class Grid
         Vector2Int result = Vector2Int.zero;
         result.x = Mathf.RoundToInt(mousePosition.x/gridSize);
         result.y = Mathf.RoundToInt(mousePosition.y/gridSize);
+        if(InGrid(result) == false){
+            for(var i = 0; i < directions.Length;i++){
+                if(InGrid(result+directions[i])){
+                    result = result+directions[i];
+                    break;
+                }
+            }
+        }
+
         return result;
     }
     public Vector2Int RealToGrid(Vector2 pos){
