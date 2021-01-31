@@ -23,6 +23,8 @@ public class Visuals : MonoBehaviour
     public Sprite[] wantPatterns;
     public Sprite[] wantColors;
 
+    public Sprite[] reactions;
+
 
 
 

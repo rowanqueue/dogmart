@@ -340,6 +340,7 @@ public class Customer
 
         if (currentWaitTime > maxWaitTime)
         {
+            GameObject reaction = GameObject.Instantiate(Services.GameController.reactionPrefab,gameObject.transform.position,Quaternion.identity) as GameObject;
             leaveQueue();
         }
         if (linePosition == 0 ){
@@ -375,6 +376,8 @@ public class Customer
         }
         else
         {
+            GameObject reaction = GameObject.Instantiate(Services.GameController.reactionPrefab,gameObject.transform.position,Quaternion.identity) as GameObject;
+            reaction.GetComponent<Reaction>().happy  =true;
             Services.CustomerManager.done.Add(this);
             Services.DayManager.money += payout;
             GameObject.Destroy(gameObject);

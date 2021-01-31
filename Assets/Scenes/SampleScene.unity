@@ -405,6 +405,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1dbeedf5a334e964288c92572bf72a1d, type: 3}
   - {fileID: 21300000, guid: 10e0dd18779312f408f18746561a07b8, type: 3}
   - {fileID: 21300000, guid: 1c3c81ce3e2476a45b3d8ddd08709636, type: 3}
+  reactions:
+  - {fileID: 21300000, guid: 63c007ad18ab7da40b3ac1e9c520af49, type: 3}
+  - {fileID: 21300000, guid: 425ee20130acf404993f6e433c07cdd8, type: 3}
 --- !u!1 &484431691
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,6 +709,8 @@ MonoBehaviour:
   camera: {fileID: 519420031}
   holdingSomething: 0
   whatHolding: 0
+  reactionPrefab: {fileID: 5051610646461697541, guid: 0281e66f27c92a54ba4a3946b2cd7344,
+    type: 3}
   petSpeed: 0.05
   petWaitMin: 0.15
   petWaitMax: 0.35

@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     public Pet heldPet;
     public Peg heldPeg;
     public Food heldFood;
+    public GameObject reactionPrefab;
     [Header("Tuning")]
     public float petSpeed = 0.05f;
     public float petWaitMin = 0.15f;
