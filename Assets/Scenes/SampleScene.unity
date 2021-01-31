@@ -975,7 +975,7 @@ MonoBehaviour:
   petWaitMax: 0.35
   petMinRangeToFinish: 0.1
   positiveTraitTradeGain: 1.5
-  negativeTraitTradeLoss: 1
+  negativeTraitTradeLoss: 1.7
   startingTimeBetweenPets: 5
   petBonusToSpawnTime: 0.1
   defaultLifeSpan: 180
