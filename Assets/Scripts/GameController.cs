@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+    public bool started;
     public GameObject petPrefab;
     public GameObject pegPrefab;
 
@@ -47,7 +48,7 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         InitializeServices();
-        Services.PetManager.AddPet(petStartingPos);
+        
     }
 
     void InitializeServices(){
@@ -55,17 +56,32 @@ public class GameController : MonoBehaviour
         Services.Visuals = GetComponentInChildren<Visuals>();
         Services.Grid = new Grid();
         Services.PetManager = new PetManager();
-        Services.PetManager.Initialize();
+        
         Services.CustomerManager = new CustomerManager();
-        Services.CustomerManager.Initialize();
+        
         Services.DayManager = new DayManager();
+        
+    }
+    public void StartGame(){
+        started = true;
+        Services.PetManager.Initialize();
+        Services.PetManager.AddPet(petStartingPos);
+        Services.CustomerManager.Initialize();
         Services.DayManager.Initialize();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Cursor.SetCursor(cursors[holdingSomething ? 1 : 0],Vector2.zero,CursorMode.ForceSoftware);
+        Cursor.SetCursor(cursors[holdingSomething ? 1 : 0],new Vector2(0.5f,-0.5f),CursorMode.ForceSoftware);
+        
+
+        if(started == false){
+            if(Input.GetMouseButtonDown(0)){
+                StartGame();
+            }
+            return;
+        }
         if (Services.DayManager.lost)
         {
             dead.SetActive(true);
@@ -74,8 +90,6 @@ public class GameController : MonoBehaviour
         {
             dead.SetActive(false);
         }
-
-        Cursor.SetCursor(cursors[holdingSomething ? 1 : 0],Vector2.zero,CursorMode.Auto);
         if(Input.GetMouseButtonDown(0)){
             Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             //Debug.Log(Services.Grid.MouseGridPosition());
