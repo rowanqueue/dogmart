@@ -11,6 +11,10 @@ public class PetManager
         pets = new List<Pet>();
         pegs = new List<Peg>();
         foods = new List<Food>();
+        for (int i = 0; i < 6; i++)
+        {
+            AddPet(new Vector2Int(0,0));
+        }
     }
     public void AddPet(Vector2Int gridPos){
         Pet pet = new Pet(gridPos);

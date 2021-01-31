@@ -47,6 +47,8 @@ public class GameController : MonoBehaviour
         Services.PetManager.Initialize();
         Services.CustomerManager = new CustomerManager();
         Services.CustomerManager.Initialize();
+        Services.DayManager = new DayManager();
+        Services.DayManager.Initialize();
     }
 
     // Update is called once per frame
@@ -99,6 +101,7 @@ public class GameController : MonoBehaviour
         }
         Services.PetManager.Update();
         Services.CustomerManager.Update();
+        Services.DayManager.Update();
     }
     void GrabPet(Pet pet){
         holdingSomething = true;

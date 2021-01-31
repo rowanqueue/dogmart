@@ -32,6 +32,7 @@ public enum Bait{
 public class Pet
 {
     public bool held;
+    public bool owned = false;
     public Vector2Int gridPosition;
     public Vector2Int goal;
     public Vector2Int nextPosition;
