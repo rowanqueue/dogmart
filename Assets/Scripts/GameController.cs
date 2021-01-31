@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+    public GameObject startScreen;
     public bool started;
     public GameObject petPrefab;
     public GameObject pegPrefab;
@@ -64,6 +65,7 @@ public class GameController : MonoBehaviour
     }
     public void StartGame(){
         started = true;
+        Destroy(startScreen);
         Services.PetManager.Initialize();
         Services.PetManager.AddPet(petStartingPos);
         Services.CustomerManager.Initialize();
