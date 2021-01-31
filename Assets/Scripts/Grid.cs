@@ -11,13 +11,13 @@ public class Grid
         grid = new bool[size.x,size.y];
     }
     public bool InGrid(Vector2Int pos){
-        if(pos.x < 0 || pos.x >= size.x || pos.y < 0 || pos.y >= size.y){
+        if(pos.x < 1 || pos.x >= 12 || pos.y < 0 || pos.y >= 8){
             return false;
         }
         return true;
     }
     public Vector2Int RandomPosition(){
-        return new Vector2Int(Random.Range(0,size.x),Random.Range(0,size.y));
+        return new Vector2Int(Random.Range(1,13),Random.Range(0,9));
     }
     public Vector2Int MouseGridPosition(){
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

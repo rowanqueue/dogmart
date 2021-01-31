@@ -7,6 +7,12 @@ public class Visuals : MonoBehaviour
     public int numColors;
     public int numPatterns;
     public Sprite[] circleBoys;
+    public Sprite[] squareLads;
+    public Sprite[] triGuys;
+    public Sprite[] pegs;
+    public Sprite[] baits;
+    public Sprite[] baitSplotches;
+    public Sprite[] baitButtons;
 
 
 
@@ -16,6 +22,12 @@ public class Visuals : MonoBehaviour
         switch(pet.traits.shape){
             case Shape.Circle:
                 boys = circleBoys;
+                break;
+            case Shape.Square:
+                boys = squareLads;
+                break;
+            case Shape.Triangle:
+                boys = triGuys;
                 break;
             default:
                 boys = new Sprite[1];

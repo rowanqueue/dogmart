@@ -39,8 +39,6 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         InitializeServices();
-        Services.PetManager.AddPeg();
-        Services.PetManager.AddFood();
         Services.PetManager.AddPet(petStartingPos);
     }
 
@@ -60,7 +58,7 @@ public class GameController : MonoBehaviour
     void Update()
     {
         if(Input.GetMouseButtonDown(0)){
-            Debug.Log(Services.Grid.MouseGridPosition());
+            Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if(Input.GetMouseButtonDown(0)){
@@ -119,7 +117,10 @@ public class GameController : MonoBehaviour
     void DropPet(){
         holdingSomething = false;
         whatHolding = 0;
-        heldPet.gridPosition = Services.Grid.MouseGridPosition();
+        
+        if(Services.Grid.InGrid(Services.Grid.MouseGridPosition())){
+            heldPet.gridPosition = Services.Grid.MouseGridPosition();
+        }
         foreach(Peg peg in Services.PetManager.pegs){
             if(peg.gridPosition == heldPet.gridPosition || Vector2.Distance(peg.gameObject.transform.position,heldPet.gameObject.transform.position) < 0.75f){
                 peg.AttachPetToPeg(heldPet);
@@ -139,16 +140,10 @@ public class GameController : MonoBehaviour
 
     }
     void GrabPeg(Peg peg){
-        if(Services.DayManager.money < pegCost){
-            Debug.Log("NO MONEY!!");
-            return;
-        }
-        Services.DayManager.money-=pegCost;
         holdingSomething = true;
         whatHolding = 2;
         heldPeg = peg;
         peg.held = true;
-        Services.PetManager.AddPeg();
     }
     void DropPeg(){
         holdingSomething = false;
@@ -159,16 +154,10 @@ public class GameController : MonoBehaviour
         heldPeg = null;
     }
     void GrabFood(Food food){
-        if(Services.DayManager.money < baitCost){
-            Debug.Log("NO MONEY!!");
-            return;
-        }
-        Services.DayManager.money-=baitCost;
         holdingSomething = true;
         whatHolding = 3;
         heldFood = food;
         food.held = true;
-        Services.PetManager.AddFood();
     }
     void DropFood(){
         holdingSomething = false;

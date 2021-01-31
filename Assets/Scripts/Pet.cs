@@ -11,7 +11,6 @@ public enum Shape{
     None,
     Circle,
     Square,
-    Hex,
     Triangle
 }
 public enum Pattern{
@@ -23,10 +22,10 @@ public enum Pattern{
 }
 public enum Bait{
     None,
-    Mayo,
-    Watermelon,
-    Fish,
-    IceCream
+    Cake,
+    PeanutButter,
+    ShavingCream,
+    Tomato
 }
 public enum State{
     Resting,
@@ -50,19 +49,13 @@ public class Pet
     float specialNumber;
     float birthTime;
     float lifeSpan;
+    public float burnStartTime;
 
     public Traits traits;
-    public Pet(Vector2Int gridPos, Traits traits){
-        this.gridPosition = gridPos;
-        this.traits = traits;
-        CreateVisual();
-        nextMovementAllowed = Time.time;
-    }
     public Pet(Vector2Int gridPos){
         this.gridPosition = gridPos;
         this.traits = new Traits();
         this.traits.RandomTraits();
-        traits.shape = Shape.Circle;
         specialNumber = Random.Range(0f,10f);
         birthTime = Time.time;
         lifeSpan = Services.GameController.defaultLifeSpan;
@@ -74,6 +67,9 @@ public class Pet
         }
         
     }
+    public void Destroy(){
+        GameObject.Destroy(gameObject);
+    }
     void CreateVisual(){
         gameObject = GameObject.Instantiate(Services.GameController.petPrefab,(Vector2)gridPosition,Quaternion.identity,Services.GameController.transform) as GameObject;
         gameObject.transform.position-=Vector3.up;
@@ -83,6 +79,7 @@ public class Pet
 
     public void Update(){
         if(held){
+            spriteRenderer.sortingOrder = 100;
             gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             gameObject.transform.position = new Vector3(gameObject.transform.position.x+Mathf.Sin(Time.time*15f)*0.1f,gameObject.transform.position.y+Mathf.Sin(Time.time*10f)*0.05f,0f);
             return;
@@ -94,6 +91,11 @@ public class Pet
             gameObject.transform.position += ((Vector3)Services.Grid.GridToReal(gridPosition)-gameObject.transform.position)*Services.GameController.petSpeed;
             spriteRenderer.transform.localEulerAngles += (new Vector3(0,0,90)-spriteRenderer.transform.localEulerAngles)*0.1f;
             spriteRenderer.color = Color.gray;
+            return;
+        }
+        if(burnStartTime >= 0f){
+            Vector3 burnTarget =  (Vector3)Services.Grid.GridToReal(gridPosition) + new Vector3(0,Mathf.Cos((Time.time*(10f+specialNumber*0.05f))+specialNumber)*0.1f);
+            gameObject.transform.position += (burnTarget-gameObject.transform.position)*Services.GameController.petSpeed;
             return;
         }
         Vector2Int targetPosition = gridPosition;
@@ -135,6 +137,7 @@ public class Pet
         }
         Vector3 target =  (Vector3)Services.Grid.GridToReal(targetPosition) + new Vector3(0,Mathf.Cos((Time.time*(10f+specialNumber*0.05f))+specialNumber)*0.1f);
         gameObject.transform.position += (target-gameObject.transform.position)*Services.GameController.petSpeed;
+        spriteRenderer.sortingOrder = (5*(Services.Grid.size.y-gridPosition.y))+4;
     }
     public void GetGoal(){
         goal = gridPosition + new Vector2Int(Random.Range(-2,3),Random.Range(-2,3));
@@ -163,7 +166,7 @@ public struct Traits{
     public void RandomTraits(){
         float val = Random.value;
         this.hue = (Hue)Random.Range(1,4);
-        this.shape = (Shape)Random.Range(1,5);
+        this.shape = (Shape)Random.Range(1,4);
         int patternInt = 1;
         val = Random.value;
         if(val < 0.45f){

@@ -19,11 +19,11 @@ public class PetManager
         pets.Add(pet);
     }
     public void AddPeg(){
-        Peg peg = new Peg(new Vector2Int(Services.Grid.size.x-1,Services.Grid.size.y/2));
+        Peg peg = new Peg(new Vector2Int(Services.Grid.size.x-1,Services.Grid.size.y/2 - 1));
         pegs.Add(peg);
     }
-    public void AddFood(){
-        Food food = new Food(new Vector2Int(0,Services.Grid.size.y/2),Bait.Mayo);
+    public void AddFood(Bait bait){
+        Food food = new Food(new Vector2Int(0,Services.Grid.size.y/2),bait);
         foods.Add(food);
     }
 
@@ -33,7 +33,6 @@ public class PetManager
             AddPet(Services.GameController.petStartingPos);
         }
         for(int i = pets.Count-1;i>=0;i--){
-            pets[i].spriteRenderer.sortingOrder = i;
             pets[i].Update();
         }
         for(int i = foods.Count-1;i>=0;i--){

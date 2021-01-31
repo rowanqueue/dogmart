@@ -130,7 +130,7 @@ public class CustomerManager
                 }
             }
         }
-        Debug.Log(t);
+        //Debug.Log(t);
         Customer cust = new Customer(t, waitTime, 100);
         return cust;
     }
